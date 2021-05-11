@@ -1,0 +1,92 @@
+{% load static %}
+<html>
+<head>
+<style>
+    @page {
+        size: a4 portrait;
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content;
+            left: 50pt; width: 512pt; top: 50pt; height: 40pt;
+        }
+        @frame content_frame {          /* Content Frame */
+            left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content;
+            left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+        }
+    }
+    body {
+                font-weight: 200;
+                font-size: 14px;
+            }
+            .header {
+                font-size: 20px;
+                font-weight: 100;
+                text-align: center;
+                color: #007cae;
+            }
+            .title {
+                font-size: 22px;
+                font-weight: 100;
+               /* text-align: right;*/
+               padding: 10px 20px 0px 20px;
+            }
+            .title span {
+                color: #007cae;
+            }
+            .details {
+                padding: 10px 20px 0px 20px;
+                text-align: left !important;
+                /*margin-left: 40%;*/
+            }
+            .hrItem {
+                border: none;
+                height: 1px;
+                /* Set the hr color */
+                color: #333; /* old IE */
+                background-color: #fff; /* Modern Browsers */
+            }
+</style>
+</head>
+
+<body>
+    <div class='wrapper'>
+        <div class='header'>
+            <p class='title'>My Store's Invoice</p>
+        </div>
+    <div>
+    <div id="footer_content">(c) - page <pdf:pagenumber>
+        of <pdf:pagecount>
+    </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box-element">
+                    <hr>
+                    <h3>Order Summary</h3>
+                    <hr>
+                    {% for item in items %}
+                        <div class="cart-row">
+                            <div style="flex:2">
+                                <img class="row-image" src="{{item.product.image.path}}" height="50px" width="50px">
+                            </div>
+                            <div style="flex:2">
+                                <p>Product {{item.product.name}}</p>
+                            </div>
+                            <div style="flex:1">
+                                <p>${{item.product.price}}</p>
+                            </div>
+                            <div style="flex:1">
+                                <p>x{{item.quantity}}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <h5>Items: {{order.get_cart_items}}</h5>
+                    <h5>Total: ${{order.get_cart_total|floatformat:2}}</h5>
+                    <hr>
+                </div>
+            </div>
+        </div>
+</body>
+</html>
+

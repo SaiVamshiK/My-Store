@@ -1,0 +1,114 @@
+{% load static %}
+<html>
+<head>
+<style>
+    @page {
+        size: a4 portrait;
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content;
+            left: 50pt; width: 512pt; top: 50pt; height: 40pt;
+        }
+        @frame content_frame {          /* Content Frame */
+            left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content;
+            left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+        }
+    }
+    body {
+                font-weight: 200;
+                font-size: 14px;
+            }
+            .header {
+                font-size: 20px;
+                font-weight: 100;
+                text-align: center;
+                color: #007cae;
+            }
+            .title {
+                font-size: 22px;
+                font-weight: 100;
+               /* text-align: right;*/
+               padding: 10px 20px 0px 20px;
+            }
+            .title span {
+                color: #007cae;
+            }
+            .details {
+                padding: 10px 20px 0px 20px;
+                text-align: left !important;
+                /*margin-left: 40%;*/
+            }
+            .hrItem {
+                border: none;
+                height: 1px;
+                /* Set the hr color */
+                color: #333; /* old IE */
+                background-color: #fff; /* Modern Browsers */
+            }
+</style>
+</head>
+
+<body>
+
+    <div class='wrapper'>
+        <div class='header'>
+            <p class='title'>My Store's Invoice</p>
+        </div>
+    <div>
+
+    <!-- Content for Static Frame 'footer_frame' -->
+    <div id="footer_content">(c) - page <pdf:pagenumber>
+        of <pdf:pagecount>
+    </div>
+
+
+    {% for each_order in all_order_details %}
+        <h3>Order:</h3>
+        <table>
+                <tr class="col-md-6 btn-info">
+                    <td>{{each_order.order.customer.name}} ordered on {{each_order.order.date_ordered}}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {% if each_order.order.complete %}
+                            <h4 class="btn-success">Transaction Successful</h4>
+                        {% else %}
+                            <h4 class="btn-warning">Transaction Denied</h4>
+                        {% endif %}
+                    </td>
+                </tr>
+        </table>
+        <h3>Products Ordered</h3>
+        {% for product in each_order.details %}
+            <div class="col-lg-12">
+                <div style="flex:2" class="col-md-4">
+                    <img src="{{product.product_image.path}}" width="50px" height="50px"></p>
+                </div>
+                <div style="flex:2" class="col-md-4">
+                    <p>Product: {{product.product_name}}</p>
+                </div>
+                <div style="flex:1" class="col-md-4">
+                    <p>Price: {{product.product_price}}</p>
+                </div>
+            </div>
+        {% endfor %}
+        <br>
+        <hr>
+        <br>
+    {% endfor %}
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

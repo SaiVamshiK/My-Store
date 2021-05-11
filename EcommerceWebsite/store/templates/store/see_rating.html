@@ -1,0 +1,40 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<div class="row">
+    <div class="col-lg-4">
+
+    </div>
+    <div class="col-lg-4">
+        <img class="thumbnail" src="{{product.imageURL}}">
+        <div class="box-element product">
+            <h6><pre><strong>{{product.name}}</strong></pre></h6>
+            <hr>
+            <h4 style="display: inline-block;float:right">${{product.price|floatformat:2}}</h4>
+            <h6>{{rating|floatformat:1}} &#9734;</h6>
+        </div>
+        <br><br>
+        {% for review in reviews %}
+            <article class="media content-section">
+                <div class="cart-row">
+                    <div class="media-body">
+                        <div class="article-metadata">
+                          <small class="text-muted">Review: </small>
+                        </div>
+                        <br>
+                        <p class="article-content">{{review}}</p>
+                        <br>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+    <div class="col-lg-4">
+
+    </div>
+</div>
+
+{% endblock content %}

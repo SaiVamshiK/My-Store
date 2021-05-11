@@ -1,0 +1,79 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box-element">
+            <a href="{% url 'store' %}" class="btn btn-outline-dark">&#x2190; Back to Store</a>
+            <a class="btn btn-info " target="_blank" href="{% url 'pdf_view' %}">View Invoice</a>
+            <br>
+            <br>
+        </div>
+    </div>
+</div>
+
+{% for o in all_order_details %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box-element">
+                <table class="table">
+                    <tr>
+                        <th><h5>Order Summary (<small>date: {{o.order.date_ordered}}</small>)</h5></th>
+                        <th><strong>
+                            {% if o.order.complete %}
+                                Transaction Successful
+                            {% else %}
+                                Transaction Denied
+                            {% endif %}
+                        </strong></th>
+                    </tr>
+                </table>
+            </div>
+            <br>
+            <div class="box-element">
+                <div class="cart-row">
+                    <div style="flex:2">
+
+                    </div>
+                    <div style="flex:2">
+                        <strong>Item</strong>
+                    </div>
+                    <div style="flex:1">
+                        <strong>Price</strong>
+                    </div>
+                    <div style="flex:1">
+                        <strong></strong>
+                    </div>
+                </div>
+            </div>
+            {% for detail in o.details %}
+                <div class="box-element">
+                    <div class="cart-row">
+                        <div style="flex:2">
+                            <img class="row-image" src="{{detail.product_image.url}}">
+                        </div>
+                        <div style="flex:2">
+                            <strong>{{detail.product_name}}</strong>
+                        </div>
+                        <div style="flex:1">
+                            <strong>{{detail.product_price}}</strong>
+                        </div>
+                        <div style="flex:1">
+                            <a href="{% url 'each_product_review' detail.product_id %}" class="btn btn-info">Give a Review</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+    <br>
+{% endfor %}
+
+
+{% endblock content %}
+
+
+

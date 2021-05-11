@@ -1,0 +1,94 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+{% if request.user.is_authenticated %}
+    <div class="row">
+        <div class="col">
+            <div class="card card-body">
+                <a href="{% url 'cur_pdf_view' %}" target="_blank" class="btn btn-secondary btn-info">Download latest invoice</a>
+            </div>
+        </div>
+    </div>
+    <br>
+{% else %}
+{% endif %}
+
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+            <form method="get">
+                {{myFilter.form|crispy}}
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    {% for product in products %}
+        <div class="col-lg-4">
+            <img class="thumbnail" src="{{product.imageURL}}">
+            <div class="box-element product">
+                <h6><pre><strong>{{product.name}}</strong></pre></h6>
+                <hr>
+                <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+                <a href="#" class="btn btn-outline-success">
+                    View
+                </a>
+                <h4 style="display: inline-block;float:right">${{product.price|floatformat:2}}</h4>
+            </div>
+            <div class="box-element product">
+                <a href="{% url 'see_rating' product.pk %}">See Rating</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<br>
+<br>
+
+<div class="row">
+    <div class="col-md-4">
+
+    </div>
+    <div class="col-md-4">
+            <ul class="pagination">
+                {% if products.has_previous %}
+                    <li class="page-item ">
+                            <a class="page-link" href="?page={{products.previous_page_number}}">
+                                &laquo;
+                            </a>
+                    </li>
+                {% endif %}
+                {% for p in products.paginator.page_range %}
+                    {% if product.number == p %}
+                        <li class="page-item active">
+                            <a class="page-link" href="?page={{p}}">
+                                {{p}}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{p}}">
+                                {{p}}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if products.has_next %}
+                    <li class="page-item ">
+                            <a class="page-link" href="?page={{products.next_page_number}}">
+                                &raquo;
+                            </a>
+                    </li>
+                {% endif %}
+            </ul>
+    </div>
+    <div class="col-md-4">
+
+    </div>
+</div>
+
+{% endblock content %}

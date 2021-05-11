@@ -1,0 +1,50 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="content-section">
+    <form action="{% url 'result' product_id %}">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">
+                Place a review for...
+            </legend>
+        </fieldset>
+
+        <div class="col-md-12" style="float:right">
+            <div class="col-lg-4">
+
+            </div>
+            <div class="col-lg-4">
+                <img class="thumbnail" src="{{product.imageURL}}">
+                <div class="box-element product">
+                    <h6><strong>{{product.name}}</strong></h6>
+                    <hr>
+                </div>
+                <br>
+                <br>
+                <h2 class="btn btn-sm ">Your Experience</h2>
+                <br>
+                <input type="text" required name="sound" class="form-control">
+                <br>
+                <br>
+                <h2 class="btn btn-sm ">Your Rating (on scale of 1 to 5)</h2>
+                <br>
+                <input type="number" step="0.1" required name="rating_given" class="form-control" min="1" max="5">
+                <br>
+                <br>
+                <input type="submit" name="" value="Post Review" class="btn btn-success">
+            </div>
+            <div class="col-lg-4">
+
+            </div>
+        </div>
+    </form>
+
+</div>
+
+{% endblock content %}
+
+
+
